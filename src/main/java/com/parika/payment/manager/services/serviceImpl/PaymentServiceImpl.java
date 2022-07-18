@@ -31,9 +31,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment createPayment(ParametersHandle parametersHandle) {
         if(parametersHandle.getPaymentTypeId() == 0){
-            throw new ApiRequestException("please provide the payment type id");
+            throw new ApiRequestException("please provide the payment type id !");
         } else if (parametersHandle.getAmountPaid() == 0) {
-            throw new ApiRequestException("please provide the amount paid");
+            throw new ApiRequestException("please provide gthe amount paid");
         } else if (parametersHandle.getInitiatedBy() == null) {
             throw new ApiRequestException("please provide the initiator name");
         } else if (parametersHandle.getPaidBy() == null) {
