@@ -13,13 +13,17 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @ToString
-@Table(name = "payment_type")
-public class PaymentType {
+@Table(name = "vehicle_type")
+public class VehicleType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="payment_type_desc")
-    private String paymentTypeDesc;
+    @Column(name = "vehicle_Type_Desc_Eng")
+    private String vehicleTypeDescEng;
+    @Column(name = "vehicle_Type_Desc_Fr")
+    private  String vehicleTypeDescFr;
+    @Column(name = "vehicle_Type_Desc_Rw")
+    private String vehicleTypeDescRw;
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status statusId;

@@ -20,14 +20,15 @@ public class PayableType {
     private int id;
     @Column(name="payable_type_desc")
     private String payableTypeDesc;
-    @Column(name = "status_id")
-    private int statusId;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status statusId;
     @Column(name = "created_by")
     private String createdBy;
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_on_at")
+    private LocalDateTime createdOnDt;
     @Column(name = "updated_by")
     private String updatedBy;
-    @Column(name = "update_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "update_by_dt")
+    private LocalDateTime updatedByDt;
 }

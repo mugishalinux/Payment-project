@@ -13,13 +13,15 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @ToString
-@Table(name = "payment_type")
-public class PaymentType {
+@Table(name = "Tariff_Type")
+public class TariffType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="payment_type_desc")
-    private String paymentTypeDesc;
+    @Column(name="type_name")
+    private String typeName;
+    @Column(name="type_description")
+    private String typeDescription;
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status statusId;

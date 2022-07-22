@@ -13,13 +13,29 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @ToString
-@Table(name = "payment_type")
-public class PaymentType {
+@Table(name = "tickets")
+public class Tickets {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="payment_type_desc")
-    private String paymentTypeDesc;
+    @ManyToOne
+    @JoinColumn(name = "parking_slot_id")
+    private ParkingSlot parkingSlot;
+    @ManyToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
+    private int amount;
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+    @Column(name = "creation_time")
+    private LocalDateTime creationTime;
+    @Column(name = "expiration_time")
+    private LocalDateTime expirationTime;
+    @Column(name="payment_reference")
+    private String paymentReference;
+    @Column(name="initiated_by")
+    private String initiatedBy;
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status statusId;

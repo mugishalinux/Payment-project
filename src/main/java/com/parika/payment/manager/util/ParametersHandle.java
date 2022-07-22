@@ -1,12 +1,8 @@
 package com.parika.payment.manager.util;
 
-import com.parika.payment.manager.models.PayableType;
-import com.parika.payment.manager.models.PaymentType;
-import com.parika.payment.manager.models.Ticket;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 

@@ -2,7 +2,9 @@ package com.parika.payment.manager.services.serviceImpl;
 
 import com.parika.payment.manager.exceptions.ApiRequestException;
 import com.parika.payment.manager.models.PayableType;
+import com.parika.payment.manager.models.Status;
 import com.parika.payment.manager.repositories.PayableTypeRepo;
+import com.parika.payment.manager.repositories.StatusesRepo;
 import com.parika.payment.manager.services.PayableTypeService;
 import org.springframework.stereotype.Service;
 
@@ -12,22 +14,27 @@ import java.util.List;
 public class PayableTypeServiceImpl implements PayableTypeService {
 
     private PayableTypeRepo payableTypeRepo;
+    private StatusesRepo statusesRepo;
 
-    public PayableTypeServiceImpl(PayableTypeRepo payableTypeRepo) {
-        super();
+    public PayableTypeServiceImpl(PayableTypeRepo payableTypeRepo, StatusesRepo statusesRepo) {
         this.payableTypeRepo = payableTypeRepo;
+        this.statusesRepo = statusesRepo;
     }
 
     @Override
     public PayableType createPayableType(PayableType payableType) {
         if(payableType.getPayableTypeDesc() == null){
             throw new ApiRequestException("please provide the payable type name");
-        } else if (payableType.getStatusId() == 0) {
+        } else if (payableType.getStatusId() == null) {
             throw new ApiRequestException("please provide the status id");
         } else if (payableType.getCreatedBy() == null) {
             throw new ApiRequestException("please provide the creator");
         }else {
-            payableType.setCreatedAt(LocalDateTime.now());
+            //check if status id exist
+            Status status = statusesRepo.findById(payableType.getStatusId().getId()).orElseThrow(()->new ApiRequestException("This Status don't exist in our database"));
+            payableType.setStatusId(status);
+            payableType.setCreatedOnDt(LocalDateTime.now());
+            payableType.setUpdatedByDt(LocalDateTime.now());
             payableType.setCreatedBy(payableType.getCreatedBy());
             payableType.setUpdatedBy(payableType.getCreatedBy());
             payableType.setUpdatedBy(payableType.getCreatedBy());
@@ -53,17 +60,20 @@ public class PayableTypeServiceImpl implements PayableTypeService {
 
         if(payableType.getPayableTypeDesc() == null){
             throw new ApiRequestException("please provide the payable type name");
-        } else if (payableType.getStatusId() == 0) {
+        } else if (payableType.getStatusId() == null) {
             throw new ApiRequestException("please provide the status id");
         } else if (payableType.getCreatedBy() == null) {
             throw new ApiRequestException("please provide the creator");
         }else {
+            //check if status id exist
+            Status status = statusesRepo.findById(payableType.getStatusId().getId()).orElseThrow(()->new ApiRequestException("This Status don't exist in our database"));
             payableTypeExist.setPayableTypeDesc(payableType.getPayableTypeDesc());
-            payableTypeExist.setCreatedAt(payableTypeExist.getCreatedAt());
+            payableTypeExist.setCreatedOnDt(payableTypeExist.getCreatedOnDt());
             payableTypeExist.setCreatedBy(payableTypeExist.getCreatedBy());
             payableTypeExist.setUpdatedBy(payableType.getUpdatedBy());
-            payableTypeExist.setUpdatedAt(LocalDateTime.now());
-            return payableTypeRepo.save(payableType);
+            payableTypeExist.setUpdatedByDt(LocalDateTime.now());
+            payableTypeExist.setStatusId(status);
+            return payableTypeRepo.save(payableTypeExist);
         }
     }
 

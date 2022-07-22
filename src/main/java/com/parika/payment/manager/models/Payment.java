@@ -24,7 +24,7 @@ public class Payment {
     private PaymentType paymentType;
     @ManyToOne
     @JoinColumn(name = "ticket_id")
-    private Ticket ticketId;
+    private Tickets ticketsId;
     @Column(name = "amount_paid")
     private Double amountPaid;
     @Column(name = "initiated_by")
@@ -40,14 +40,15 @@ public class Payment {
     private String externalPaymentReference;
     @Column(name = "creation_time")
     private LocalTime creationTime;
-    @Column(name = "status_id")
-    private int statusId;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status statusId;
     @Column(name = "created_by")
     private String createdBy;
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_on_at")
+    private LocalDateTime createdOnDt;
     @Column(name = "updated_by")
     private String updatedBy;
-    @Column(name = "update_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "update_by_dt")
+    private LocalDateTime updatedByDt;
 }

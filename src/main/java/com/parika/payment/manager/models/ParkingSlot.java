@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Component
 @NoArgsConstructor
@@ -13,13 +14,20 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @ToString
-@Table(name = "payment_type")
-public class PaymentType {
+@Table(name = "Parking_Slot")
+public class ParkingSlot{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name="payment_type_desc")
-    private String paymentTypeDesc;
+    @ManyToOne
+    @JoinColumn(name = "parking_area_id")
+    private ParkingArea parkingAreaId;
+    @Column(name = "slot_name")
+    private String slotName;
+    @Column(name = "sensor_id")
+    private int sensorId;
+    @Column(name = "parking_start_time")
+    private LocalTime parkingStartTime;
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status statusId;
