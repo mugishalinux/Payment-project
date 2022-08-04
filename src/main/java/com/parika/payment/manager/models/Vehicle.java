@@ -1,11 +1,10 @@
 package com.parika.payment.manager.models;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-@Component
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -13,10 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 @Table(name = "vehicle")
-public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Vehicle extends BaseEntity{
     @JoinColumn(name = "Chassis_No")
     private String chassisNo;
     @JoinColumn(name = "Plate_NO")
@@ -34,15 +30,4 @@ public class Vehicle {
     private String frontPhotoUrl;
     @Column(name = "Side_Photo_Url")
     private String sidePhotoUrl;
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Status statusId;
-    @Column(name = "created_by")
-    private String createdBy;
-    @Column(name = "created_on_at")
-    private LocalDateTime createdOnDt;
-    @Column(name = "updated_by")
-    private String updatedBy;
-    @Column(name = "update_by_dt")
-    private LocalDateTime updatedByDt;
 }

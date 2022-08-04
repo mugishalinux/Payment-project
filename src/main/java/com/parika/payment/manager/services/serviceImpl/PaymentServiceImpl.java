@@ -4,11 +4,14 @@ import com.parika.payment.manager.models.*;
 import com.parika.payment.manager.repositories.*;
 import com.parika.payment.manager.services.PaymentService;
 import com.parika.payment.manager.util.ParametersHandle;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
@@ -64,18 +67,18 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setPayableReference("10101010");
             payment.setExternalPaymentReference("20e0-p2z2-o0l2-m0x2");
             payment.setCreationTime(LocalTime.now());
-            payment.setStatusId(status);
+            payment.setStatus(status);
             payment.setCreatedBy(parametersHandle.getCreatedBy());
             payment.setUpdatedBy(parametersHandle.getCreatedBy());
             payment.setCreatedOnDt(LocalDateTime.now());
-            payment.setUpdatedByDt(LocalDateTime.now());
+            payment.setUpdatedOnDt(LocalDateTime.now());
             return paymentRepo.save(payment);
         }
     }
 
     @Override
-    public List<Payment> getAllPayments() {
-        return paymentRepo.findAll();
+    public Page<Payment> getAllPayments(int page, int sizePage, String sortBy) {
+            return paymentRepo.findAll(PageRequest.of(page,sizePage , Sort.Direction.ASC ,sortBy));
     }
 
     @Override
@@ -119,11 +122,11 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setPayableReference("10101010");
             payment.setExternalPaymentReference("20e0-p2z2-o0l2-m0x2");
             payment.setCreationTime(payment.getCreationTime());
-            payment.setStatusId(status);
+            payment.setStatus(status);
             payment.setCreatedBy(payment.getCreatedBy());
             payment.setUpdatedBy(parametersHandle.getUpdatedBy());
             payment.setCreatedOnDt(payment.getCreatedOnDt());
-            payment.setUpdatedByDt(LocalDateTime.now());
+            payment.setUpdatedOnDt(LocalDateTime.now());
             return paymentRepo.save(payment);
         }
     }

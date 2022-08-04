@@ -2,12 +2,13 @@ package com.parika.payment.manager.controller;
 
 import com.parika.payment.manager.models.PayableType;
 import com.parika.payment.manager.services.PayableTypeService;
-import io.swagger.annotations.ApiOperation;
+import com.parika.payment.manager.util.DeleteApiResponse;
+import com.parika.payment.manager.util.PostApiResponse;
+import com.parika.payment.manager.util.PutApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @CrossOrigin("*")
 @RestController
@@ -19,31 +20,61 @@ public class PayableTypeController {
         super();
         this.payableTypeService = payableTypeService;
     }
-    @ApiOperation(value="Create a Payable Type")
+
     @PostMapping("")
-    public ResponseEntity< PayableType> createPayableType(@RequestBody  PayableType payableType){
-        return new ResponseEntity< PayableType>(payableTypeService.createPayableType(payableType), HttpStatus.CREATED);
-    }
-    @ApiOperation(value="Retrieve a list of Payable Type")
-    @GetMapping()
-    List< PayableType> getAllPayableType(){
-        return payableTypeService.getAllPayableType();
+    public ResponseEntity<PostApiResponse> createPayableType(@RequestBody  PayableType payableType){
+        PostApiResponse response = new PostApiResponse();
+        try{
+            payableTypeService.createPayableType(payableType);
+            response.setMessage("Successfully ");
+            response.setResponseCode(HttpStatus.CREATED);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }
     }
 
-    @ApiOperation(value="Retrieve single Payable Type by using ID")
+    @GetMapping()
+    Page<PayableType> getAllPayableType(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int sizePage,
+                                        @RequestParam(defaultValue = "id") String sortBy){
+        return payableTypeService.getAllPayableType(page,sizePage,sortBy);
+    }
+
+
     @GetMapping("/{id}")
     public PayableType getPayableTypeById(@PathVariable("id") int id){
         return payableTypeService.getSinglePayableType(id);
     }
-    @ApiOperation(value="Update a Payable Type by using ID")
     @PutMapping("/{id}")
-    public ResponseEntity<PayableType> updatePayableType(@RequestBody PayableType payableType, @PathVariable("id") int id){
-        return new ResponseEntity<PayableType>(payableTypeService.updatePayableType(payableType,id),HttpStatus.OK);
+    public ResponseEntity<PutApiResponse> updatePayableType(@RequestBody PayableType payableType, @PathVariable("id") int id){
+        PutApiResponse response = new PutApiResponse();
+        try{
+            payableTypeService.updatePayableType(payableType,id);
+            response.setMessage("Successfully Updated");
+            response.setResponseCode(HttpStatus.OK);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }
     }
-    @ApiOperation(value="Delete a Payable Type by using ID")
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteParkingArea(@PathVariable("id") int id){
-        payableTypeService.deletePayableType(id);
-        return new ResponseEntity<String>("Payable Type deletion successfully!!!",HttpStatus.OK);
+    public ResponseEntity<DeleteApiResponse> deleteParkingArea(@PathVariable("id") int id){
+        DeleteApiResponse response = new DeleteApiResponse();
+        try{
+            payableTypeService.deletePayableType(id);
+            response.setMessage("Record Deleted");
+            response.setResponseCode(HttpStatus.OK);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }
     }
 }

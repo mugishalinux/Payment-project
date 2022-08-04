@@ -15,10 +15,7 @@ import java.time.LocalTime;
 @Entity
 @ToString
 @Table(name = "payment")
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Payment extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "payment_type_id")
     private PaymentType paymentType;
@@ -40,15 +37,5 @@ public class Payment {
     private String externalPaymentReference;
     @Column(name = "creation_time")
     private LocalTime creationTime;
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Status statusId;
-    @Column(name = "created_by")
-    private String createdBy;
-    @Column(name = "created_on_at")
-    private LocalDateTime createdOnDt;
-    @Column(name = "updated_by")
-    private String updatedBy;
-    @Column(name = "update_by_dt")
-    private LocalDateTime updatedByDt;
+
 }

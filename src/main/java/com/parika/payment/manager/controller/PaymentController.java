@@ -2,13 +2,15 @@ package com.parika.payment.manager.controller;
 
 import com.parika.payment.manager.models.Payment;
 import com.parika.payment.manager.services.PaymentService;
+import com.parika.payment.manager.util.DeleteApiResponse;
 import com.parika.payment.manager.util.ParametersHandle;
-import io.swagger.annotations.ApiOperation;
+import com.parika.payment.manager.util.PostApiResponse;
+import com.parika.payment.manager.util.PutApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -21,31 +23,60 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @ApiOperation(value="Create a payment")
     @PostMapping("")
-    public ResponseEntity<Payment> createPayment(@RequestBody ParametersHandle parametersHandle){
-        return new ResponseEntity<Payment>(paymentService.createPayment(parametersHandle), HttpStatus.CREATED);
+    public ResponseEntity<PostApiResponse> createPayment(@RequestBody ParametersHandle parametersHandle){
+        PostApiResponse response = new PostApiResponse();
+        try{
+            paymentService.createPayment(parametersHandle);
+            response.setMessage("Successfully");
+            response.setResponseCode(HttpStatus.CREATED);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }
+        return new ResponseEntity<Payment>(, HttpStatus.CREATED);
     }
-    @ApiOperation(value="Retrieve a list of all Payments")
     @GetMapping()
-    List<Payment> getAllPayment(){
-        return paymentService.getAllPayments();
+    Page<Payment> getAllPayment(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int sizePage,
+                                @RequestParam(defaultValue = "id") String sortBy){
+        return paymentService.getAllPayments(page,sizePage,sortBy);
     }
 
-    @ApiOperation(value="Retrieve single Payment by using ID")
     @GetMapping("/{id}")
     public Payment getPaymentById(@PathVariable("id") int id){
         return paymentService.getSinglePayment(id);
     }
-    @ApiOperation(value="Update a Payment by using ID")
+
     @PutMapping("/{id}")
-    public ResponseEntity<Payment> updatePayment(@RequestBody ParametersHandle parametersHandle, @PathVariable("id") int id){
-        return new ResponseEntity<Payment>(paymentService.updatePayment(parametersHandle,id),HttpStatus.OK);
+    public ResponseEntity<PutApiResponse> updatePayment(@RequestBody ParametersHandle parametersHandle, @PathVariable("id") int id){
+        PutApiResponse response = new PutApiResponse();
+        try{
+            paymentService.updatePayment(parametersHandle,id);
+            response.setMessage("Successfully Updated");
+            response.setResponseCode(HttpStatus.OK);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }
     }
-    @ApiOperation(value="Delete a Payment by using ID")
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePayment(@PathVariable("id") int id){
-        paymentService.deletePayment(id);
-        return new ResponseEntity<String>("Payment deletion successfully!!!",HttpStatus.OK);
+    public ResponseEntity<DeleteApiResponse> deletePayment(@PathVariable("id") int id){
+        DeleteApiResponse response = new DeleteApiResponse();
+        try{
+            paymentService.deletePayment(id);
+            response.setMessage("Successfully Updated");
+            response.setResponseCode(HttpStatus.OK);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response,response.getResponseCode());
+        }
     }
 }

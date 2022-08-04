@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Component
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -14,21 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 @Table(name = "payable_type")
-public class PayableType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class PayableType extends BaseEntity{
     @Column(name="payable_type_desc")
     private String payableTypeDesc;
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Status statusId;
-    @Column(name = "created_by")
-    private String createdBy;
-    @Column(name = "created_on_at")
-    private LocalDateTime createdOnDt;
-    @Column(name = "updated_by")
-    private String updatedBy;
-    @Column(name = "update_by_dt")
-    private LocalDateTime updatedByDt;
 }

@@ -14,10 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 @Table(name = "tickets")
-public class Tickets {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Tickets extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "parking_slot_id")
     private ParkingSlot parkingSlot;
@@ -36,15 +33,4 @@ public class Tickets {
     private String paymentReference;
     @Column(name="initiated_by")
     private String initiatedBy;
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Status statusId;
-    @Column(name = "created_by")
-    private String createdBy;
-    @Column(name = "created_on_at")
-    private LocalDateTime createdOnDt;
-    @Column(name = "updated_by")
-    private String updatedBy;
-    @Column(name = "update_by_dt")
-    private LocalDateTime updatedByDt;
 }

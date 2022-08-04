@@ -14,21 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 @Table(name = "payment_type")
-public class PaymentType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class PaymentType extends BaseEntity{
     @Column(name="payment_type_desc")
     private String paymentTypeDesc;
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Status statusId;
-    @Column(name = "created_by")
-    private String createdBy;
-    @Column(name = "created_on_at")
-    private LocalDateTime createdOnDt;
-    @Column(name = "updated_by")
-    private String updatedBy;
-    @Column(name = "update_by_dt")
-    private LocalDateTime updatedByDt;
 }
